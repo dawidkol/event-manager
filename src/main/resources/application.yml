@@ -1,5 +1,0 @@
-spring:
-  application:
-    name: aibron_first_task
-  datasource:
-    url: jdbc:postgres://localhost:5432/aibron
