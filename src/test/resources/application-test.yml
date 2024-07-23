@@ -2,14 +2,9 @@ spring:
   application:
     name: aibron_first_task
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/aibron
-    username: myuser
-    password: secret
 
-  flyway:
-    clean-disabled: false
-    enabled: true
+  datasource:
+    url: jdbc:tc:postgresql:latest:///testdb
 
   jpa:
     hibernate:
@@ -34,7 +29,6 @@ logging:
         orm:
           jdbc:
             bind: TRACE
-
 server:
   error:
     include-message: always
