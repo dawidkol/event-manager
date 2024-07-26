@@ -2,9 +2,8 @@ spring:
   application:
     name: aibron_first_task
 
-
   datasource:
-    url: jdbc:tc:postgresql:latest:///testdb
+    url: jdbc:tc:postgresql:latest:///test-db
 
   jpa:
     hibernate:

@@ -1,18 +1,13 @@
 package pl.dk.aibron_first_task.user;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import pl.dk.aibron_first_task.BaseIntegrationTest;
 
 
 class UserControllerIntegrationTest extends BaseIntegrationTest {
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Test
     void userControllerIntegrationTest() throws Exception {
