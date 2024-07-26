@@ -27,4 +27,14 @@ class EventDtoMapper {
                 .price(event.getPrice())
                 .build();
     }
+
+    public SaveEventDto mapToUpdate(Event event) {
+        return SaveEventDto.builder()
+                .name(event.getName())
+                .description(event.getDescription())
+                .eventStart(event.getEventStart())
+                .eventEnd(event.getEventEnd())
+                .price(event.getPrice())
+                .build();
+    }
 }

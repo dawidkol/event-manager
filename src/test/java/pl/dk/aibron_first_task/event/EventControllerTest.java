@@ -3,6 +3,7 @@ package pl.dk.aibron_first_task.event;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import pl.dk.aibron_first_task.BaseIntegrationTest;
@@ -11,6 +12,7 @@ import pl.dk.aibron_first_task.event.dtos.SaveEventDto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 
 class EventControllerTest extends BaseIntegrationTest {
@@ -44,11 +46,10 @@ class EventControllerTest extends BaseIntegrationTest {
 
         String eventJsonValid = objectMapper.writeValueAsString(saveEventDtoValid);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/events")
+        ResultActions createEventResultAction = mockMvc.perform(MockMvcRequestBuilders.post("/events")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(eventJsonValid))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
-
 
         // 3. User wants to retrieve all events
         LocalDate localDate = LocalDate.now().plusDays(2);
@@ -56,6 +57,29 @@ class EventControllerTest extends BaseIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(Matchers.greaterThan(0))));
+
+        // 4. User wants to retrieve event by given id
+        String location = createEventResultAction.andReturn().getResponse().getHeader("Location");
+
+        String[] split = Objects.requireNonNull(location).split("/");
+        long id = Long.parseLong(Objects.requireNonNull(split[split.length - 1]));
+
+        ResultActions getEventByIdResultAction = mockMvc.perform(MockMvcRequestBuilders.get("/events/{id}", id))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+
+        // 5. User wants to update event
+        String jsonMergePatchUpdate = """
+                {
+                    "name": "test name - updated",
+                    "description": "test description - updated"
+                }
+                """.trim();
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/events/{id}",id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonMergePatchUpdate))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
 }

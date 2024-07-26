@@ -1,7 +1,9 @@
 package pl.dk.aibron_first_task.event;
 
+import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +43,18 @@ class EventController {
             @PositiveOrZero @RequestParam(required = false, defaultValue = PaginationConstants.PAGE_SIZE_DEFAULT) int size) {
         List<EventDto> allEventsForEndDate = eventService.getAllEventsForEndDate(localDate, page, size);
         return ResponseEntity.ok(allEventsForEndDate);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EventDto> getEventById(@Positive @PathVariable Long id) {
+        EventDto eventById = eventService.findById(id);
+        return ResponseEntity.ok(eventById);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateEvent(@Positive @PathVariable Long id, @RequestBody JsonMergePatch jsonMergePatch) {
+        eventService.updateEvent(id, jsonMergePatch);
+        return ResponseEntity.noContent().build();
     }
 
 }
