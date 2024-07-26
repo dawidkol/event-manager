@@ -173,7 +173,6 @@ class EventServiceImplTest {
         when(eventRepository.save(any(Event.class))).thenReturn(updatedEvent);
         ArgumentCaptor<Event> eventArgumentCaptor = ArgumentCaptor.forClass(Event.class);
 
-
         String jsonMergePatchUpdate = """
                 {
                     "name": "test name - updated",

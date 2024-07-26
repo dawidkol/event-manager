@@ -3,6 +3,7 @@ package pl.dk.aibron_first_task.event;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -18,6 +19,7 @@ import java.util.Objects;
 class EventControllerTest extends BaseIntegrationTest {
 
     @Test
+    @Rollback(value = true)
     void EventControllerIntegrationTest() throws Exception {
         // 1. User wants to create new event with invalid data
         SaveEventDto saveEventDtoInvalid = SaveEventDto.builder()

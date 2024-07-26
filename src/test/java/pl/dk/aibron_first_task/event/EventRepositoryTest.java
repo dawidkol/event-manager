@@ -1,13 +1,17 @@
 package pl.dk.aibron_first_task.event;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,6 +26,7 @@ class EventRepositoryTest {
     private EventRepository underTest;
 
     @Test
+    @DisplayName("It should return 10 records")
     void itShouldReturn10Records() {
         // Given
         LocalDate localDateTime = LocalDate.now().plusYears(1);
@@ -35,4 +40,20 @@ class EventRepositoryTest {
         // Then
         assertEquals(10, totalElements);
     }
+
+
+    @Test
+    @DisplayName("It should find all ended events")
+    @Sql("/test-event-repository.sql")
+    void itShouldFindAllEndedEvents() {
+        List<Event> all = underTest.findAll();
+
+        // When
+        List<Event> allEndedEvents = underTest.findAllEndedEvents();
+
+        // Then
+        assertEquals(all.size(), allEndedEvents.size());
+        underTest.deleteAll();
+    }
+
 }

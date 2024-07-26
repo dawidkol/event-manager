@@ -38,3 +38,7 @@ logging:
 server:
   error:
     include-message: always
+
+scheduler:
+  event:
+    archive: 0 0 0 * * ?

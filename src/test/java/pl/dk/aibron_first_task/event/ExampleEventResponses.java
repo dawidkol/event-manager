@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-class ExampleEventResponses {
+public class ExampleEventResponses {
 
     static Random r = new Random();
     static double random = r.nextDouble();
 
-    static List<Event> get10ExampleEvents() {
+    public static List<Event> get10ExampleEvents() {
         List<Event> events = new ArrayList<>();
 
         for (int i = 1; i <= 10; i++) {
@@ -30,7 +30,7 @@ class ExampleEventResponses {
         return events;
     }
 
-    static List<EventDto> get10ExampleEventDtos() {
+    public static List<EventDto> get10ExampleEventDtos() {
         List<EventDto> events = new ArrayList<>();
 
         for (int i = 1; i <= 10; i++) {
@@ -46,6 +46,24 @@ class ExampleEventResponses {
         }
         return events;
     }
+
+    public static List<Event> get10ExampleEndedEvents() {
+        List<Event> events = new ArrayList<>();
+
+        for (int i = 1; i <= 10; i++) {
+            Event event = Event.builder()
+                    .id((long) i)
+                    .name("Event " + i)
+                    .description("Description for Event " + i)
+                    .eventStart(LocalDateTime.now().minusDays(2))
+                    .eventEnd(LocalDateTime.now().minusDays(1))
+                    .price(BigDecimal.valueOf(random + i))
+                    .build();
+            events.add(event);
+        }
+        return events;
+    }
+
 
 
 }

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-interface EventRepository extends JpaRepository<Event, Long> {
+public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query(value = "SELECT * FROM event WHERE event_start >= now() AND event_end <= :localDate", nativeQuery = true)
     Page<Event> findAllByEventEnd(Pageable pageable, @Param("localDate") LocalDate localDate);
@@ -25,4 +25,7 @@ interface EventRepository extends JpaRepository<Event, Long> {
         Example<Event> example = Example.of(event, matcher);
         return this.findAll(example);
     }
+
+    @Query(value = "SELECT * FROM event WHERE event_end <= now()", nativeQuery = true)
+    List<Event> findAllEndedEvents();
 }
