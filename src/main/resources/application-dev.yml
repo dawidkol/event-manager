@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: aibron_first_task
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/aibron
+    username: myuser
+    password: secret
+
+  flyway:
+    clean-disabled: false
+    enabled: true
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+  docker:
+    compose:
+      skip:
+        in-tests: true
+
+logging:
+  level:
+    pl:
+      dk: TRACE
+    org:
+      flywaydb: TRACE
+      hibernate:
+        orm:
+          jdbc:
+            bind: TRACE
+
+server:
+  error:
+    include-message: always
+
+scheduler:
+  event:
+    archive: 0 0 0 * * ?
+
+jws:
+  sharedKey: ${JWS_SHARED_KEY}
