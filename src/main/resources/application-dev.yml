@@ -42,3 +42,6 @@ server:
 scheduler:
   event:
     archive: 0 0 0 * * ?
+
+jws:
+  sharedKey: ${JWS_SHARED_KEY}
