@@ -39,7 +39,6 @@ class EventRepositoryTest {
         assertEquals(10, totalElements);
     }
 
-
     @Test
     @DisplayName("It should find all ended events")
     @Sql("/test-event-repository.sql")
@@ -54,4 +53,16 @@ class EventRepositoryTest {
         underTest.deleteAll();
     }
 
+    @Test
+    @Sql("/test-event-repository-finding-events-for-notification.sql")
+    @DisplayName("It should find all events for notification [1 day before event starts]")
+    void itShouldName() {
+        // Given
+
+        // When
+        List<Event> eventsForNotification = underTest.findEventsForNotification();
+
+        // Then
+        assertEquals(1, eventsForNotification.size());
+    }
 }

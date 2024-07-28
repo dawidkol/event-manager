@@ -10,6 +10,7 @@ spring:
   flyway:
     clean-disabled: false
     enabled: true
+    locations: classpath:/db/migration, classpath:/db/test-data
 
   jpa:
     hibernate:
@@ -42,6 +43,15 @@ server:
 scheduler:
   event:
     archive: 0 0 0 * * ?
+  notification:
+    sms: 0 0 7 * * ?
 
 jws:
   sharedKey: ${JWS_SHARED_KEY}
+
+twilio:
+  phone:
+    number:
+      from: ${TWILIO_PHONE_NUMBER}
+  account-sid: ${TWILIO_ACCOUNT-SID}
+  auth-token: ${TWILIO_AUTH-TOKEN}

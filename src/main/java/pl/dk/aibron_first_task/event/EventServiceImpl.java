@@ -11,12 +11,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dk.aibron_first_task.event.dtos.EventDto;
 import pl.dk.aibron_first_task.event.dtos.SaveEventDto;
-import pl.dk.aibron_first_task.exception.EventExistsException;
-import pl.dk.aibron_first_task.exception.EventNotFoundException;
-import pl.dk.aibron_first_task.exception.ServerException;
+import pl.dk.aibron_first_task.event.event_participants.EventUser;
+import pl.dk.aibron_first_task.event.event_participants.EventUserDAO;
+import pl.dk.aibron_first_task.exception.*;
+import pl.dk.aibron_first_task.user.User;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -25,6 +28,7 @@ class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final EventDtoMapper eventDtoMapper;
     private final ObjectMapper objectMapper;
+    private final EventUserDAO eventUserDAO;
 
     @Override
     @Transactional
@@ -72,6 +76,34 @@ class EventServiceImpl implements EventService {
         JsonNode jsonNode = objectMapper.valueToTree(saveEventDto);
         JsonNode apply = jsonMergePatch.apply(jsonNode);
         return objectMapper.treeToValue(apply, SaveEventDto.class);
+    }
+
+    @Override
+    @Transactional
+    public void participateInEvent(EventUser eventUser) {
+        validateParticipateRequest(eventUser);
+        eventUserDAO.saveParticipant(eventUser);
+    }
+
+    private void validateParticipateRequest(EventUser eventUser) {
+        Long userId = eventUser.userId();
+        Long eventId = eventUser.eventId();
+        LocalDateTime eventStart = eventRepository.findById(eventId).map(
+                        event -> {
+                            Optional<User> optionalUser = event.getParticipants()
+                                    .stream()
+                                    .filter(user -> user.getId().equals(userId))
+                                    .findFirst();
+                            if (optionalUser.isPresent()) {
+                                throw new UserAlreadyParticipateInEventException("User with id [%s] already participate in event with id [%s]".formatted(userId, eventId));
+                            }
+                            return event.getEventStart();
+                        }
+                )
+                .orElseThrow(() -> new EventNotFoundException("Event with id %s not found".formatted(eventId)));
+        if (LocalDateTime.now().isAfter(eventStart)) {
+            throw new CouldNotParticipateException("Event with id %s already started");
+        }
     }
 
 }
