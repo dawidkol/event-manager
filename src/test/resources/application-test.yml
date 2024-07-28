@@ -18,6 +18,10 @@ spring:
       skip:
         in-tests: true
 
+  output:
+    ansi:
+      enabled: ALWAYS
+
 logging:
   level:
     pl:
@@ -35,6 +39,9 @@ server:
 scheduler:
   event:
     archive: 0 0 0 * * ?
+  notification:
+    sms: 0 0 7 * * ?
 
 jws:
   sharedKey: 2a4dca255-dc9d-1ed9-9e2b-6d32a51cd21a
+

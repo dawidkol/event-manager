@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.dk.aibron_first_task.exception.UserExistsException;
 import pl.dk.aibron_first_task.user.dtos.RegistrationUserDto;
@@ -27,6 +28,8 @@ class UserServiceImplTest {
     private UserService underTest;
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private ApplicationEventPublisher applicationEventPublisher;
 
     private AutoCloseable autoCloseable;
 
@@ -34,7 +37,7 @@ class UserServiceImplTest {
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
         UserDtoMapper userDtoMapper = new UserDtoMapper();
-        underTest = new UserServiceImpl(userRepository, userDtoMapper, userRoleRepository, passwordEncoder);
+        underTest = new UserServiceImpl(userRepository, userDtoMapper, userRoleRepository, passwordEncoder, applicationEventPublisher);
     }
 
     @AfterEach
@@ -51,6 +54,7 @@ class UserServiceImplTest {
                 .lastName("Doe")
                 .email("john@doe.pl")
                 .password("verySecretPassword")
+                .phoneNumber("+48123456789")
                 .build();
 
         long id = 1L;

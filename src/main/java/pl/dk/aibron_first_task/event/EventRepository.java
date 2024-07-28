@@ -28,4 +28,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query(value = "SELECT * FROM event WHERE event_end <= now()", nativeQuery = true)
     List<Event> findAllEndedEvents();
+
+    @Query(value = "SELECT * FROM event WHERE date(event_start) = date(now() - INTERVAL '1 day')", nativeQuery = true)
+    List<Event> findEventsForNotification();
+
 }

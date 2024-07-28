@@ -17,7 +17,8 @@ class UserControllerIntegrationTest extends BaseIntegrationTest {
                 	"firstName": "Add your name in the body",
                     "lastName": "Add your name in the body",
                     "email": "john@doe.com",
-                    "password": "pass"
+                    "password": "pass",
+                    "phoneNumber": "+48123456789"
                 }
                 """;
         mockMvc.perform(MockMvcRequestBuilders.post("/users")
@@ -31,7 +32,8 @@ class UserControllerIntegrationTest extends BaseIntegrationTest {
                 	"firstName": "Add your name in the body",
                     "lastName": "Add your name in the body",
                     "email": "john@doe.com",
-                    "password": "password"
+                    "password": "password",
+                    "phoneNumber": "+48123456789"
                 }
                 """;
         mockMvc.perform(MockMvcRequestBuilders.post("/users")

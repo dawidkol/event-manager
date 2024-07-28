@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 enum Role {
-    ADMIN("He's like a Bog"),
+    ADMIN("He's like a GOD"),
     USER("Simple user");
 
     private String description;

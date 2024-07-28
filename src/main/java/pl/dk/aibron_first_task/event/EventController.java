@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.dk.aibron_first_task.constants.PaginationConstants;
 import pl.dk.aibron_first_task.event.dtos.EventDto;
 import pl.dk.aibron_first_task.event.dtos.SaveEventDto;
+import pl.dk.aibron_first_task.event.event_participants.EventUser;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -54,6 +55,12 @@ class EventController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateEvent(@Positive @PathVariable Long id, @RequestBody JsonMergePatch jsonMergePatch) {
         eventService.updateEvent(id, jsonMergePatch);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/participate")
+    public ResponseEntity<?> participateInEvent(@Valid @RequestBody EventUser eventUser) {
+        eventService.participateInEvent(eventUser);
         return ResponseEntity.noContent().build();
     }
 

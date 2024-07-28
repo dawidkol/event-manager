@@ -22,6 +22,7 @@ class UserDtoMapper {
                 .lastName(registrationUserDto.lastName())
                 .email(registrationUserDto.email())
                 .password(registrationUserDto.password())
+                .phoneNumber(registrationUserDto.phoneNumber())
                 .build();
     }
 }

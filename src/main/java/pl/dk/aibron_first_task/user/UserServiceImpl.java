@@ -1,10 +1,12 @@
 package pl.dk.aibron_first_task.user;
 
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dk.aibron_first_task.exception.UserExistsException;
+import pl.dk.aibron_first_task.user.dtos.OnRegistrationEvent;
 import pl.dk.aibron_first_task.user.dtos.RegistrationUserDto;
 import pl.dk.aibron_first_task.user.dtos.UserDto;
 
@@ -18,6 +20,7 @@ class UserServiceImpl implements UserService {
     private final UserDtoMapper userDtoMapper;
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     @Transactional
@@ -25,7 +28,16 @@ class UserServiceImpl implements UserService {
         validUserEmail(registrationUserDto);
         User userToSave = setUserProperties(registrationUserDto);
         User savedUser = userRepository.save(userToSave);
+        OnRegistrationEvent onRegistrationEventObject = createOnRegistrationEventObject(savedUser);
+        applicationEventPublisher.publishEvent(onRegistrationEventObject);
         return userDtoMapper.map(savedUser);
+    }
+
+    private OnRegistrationEvent createOnRegistrationEventObject(User savedUser) {
+        return OnRegistrationEvent.builder()
+                .firstName(savedUser.getFirstName())
+                .phoneNumber(savedUser.getPhoneNumber())
+                .build();
     }
 
     private User setUserProperties(RegistrationUserDto registrationUserDto) {
