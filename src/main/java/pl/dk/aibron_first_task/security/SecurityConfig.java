@@ -38,6 +38,12 @@ class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests(request -> request
                 .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                .requestMatchers("/app.js")
+                .permitAll()
+                .requestMatchers("/styles/**")
+                .permitAll()
+                .requestMatchers(mvc.pattern("/chat/**"))
+                .permitAll()
                 .requestMatchers(mvc.pattern(HttpMethod.POST, "/users")).permitAll()
                 .requestMatchers("/swagger-ui/**",
                         "/swagger-resources/**",
