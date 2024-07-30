@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Manager Chat</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="/app.js" defer></script>
+</head>
+<body>
+<div class="container">
+    <div id="login" class="chat-window">
+        <h2>Wprowadź swoje imię</h2>
+        <div class="login-form">
+            <input type="text" id="nameInput" placeholder="Twoje imię" required>
+            <button id="connectButton">Połącz</button>
+        </div>
+    </div>
+    <div id="chat" class="chat" style="display: none;">
+        <h2>Chat</h2>
+        <div id="messages" class="messages"></div>
+        <form id="messageForm" class="message-form">
+            <input type="text" id="messageInput" placeholder="Wpisz wiadomość..." required>
+            <button type="submit">Wyślij</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
